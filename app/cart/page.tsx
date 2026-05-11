@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Trash2, Minus, Plus, ArrowLeft, ShoppingBag } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([
@@ -28,7 +29,11 @@ const CartPage = () => {
 
   if (cartItems.length === 0) {
     return (
-      <div className="flex min-h-[60vh] flex-col items-center justify-center bg-white px-4">
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="flex min-h-[60vh] flex-col items-center justify-center bg-white px-4 pt-24 md:pt-40"
+      >
         <div className="mb-6 rounded-full bg-slate-50 p-8 text-slate-300">
           <ShoppingBag className="h-20 w-20" />
         </div>
@@ -37,94 +42,131 @@ const CartPage = () => {
         <Link href="/products" className="rounded-full bg-primary px-8 py-3 font-bold text-white transition-all hover:bg-primary-dark">
           Start Shopping
         </Link>
-      </div>
+      </motion.div>
     );
   }
 
   return (
-    <div className="bg-slate-50 min-h-screen py-12">
-      <div className="container mx-auto px-4">
-        <h1 className="mb-8 text-3xl font-bold text-slate-900">Shopping Cart</h1>
+    <div className="bg-slate-50 min-h-screen py-12 pt-24 md:pt-40 lg:pt-48">
+      <div className="site-container">
+        <motion.h1 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="mb-8 text-3xl font-black text-slate-900"
+        >
+          Shopping Cart
+        </motion.h1>
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-4">
-            {cartItems.map((item) => (
-              <div key={item.id} className="flex flex-col sm:flex-row items-center gap-6 rounded-2xl border bg-white p-6 transition-all hover:shadow-sm">
-                <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl border bg-slate-50">
-                  <Image src={item.image} alt={item.name} fill className="object-contain p-2" />
-                </div>
-                
-                <div className="flex-1 text-center sm:text-left">
-                  <h3 className="text-lg font-bold text-slate-900">{item.name}</h3>
-                  <p className="text-sm font-medium text-primary">{formatPrice(item.price)}</p>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center rounded-lg border p-1">
-                    <button onClick={() => updateQuantity(item.id, -1)} className="flex h-8 w-8 items-center justify-center hover:bg-slate-50"><Minus className="h-3 w-3" /></button>
-                    <span className="w-8 text-center text-sm font-bold">{item.quantity}</span>
-                    <button onClick={() => updateQuantity(item.id, 1)} className="flex h-8 w-8 items-center justify-center hover:bg-slate-50"><Plus className="h-3 w-3" /></button>
+            <AnimatePresence mode="popLayout">
+              {cartItems.map((item) => (
+                <motion.div 
+                  key={item.id}
+                  layout
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, x: -100 }}
+                  className="flex flex-col sm:flex-row items-center gap-6 rounded-[2rem] border border-slate-100 bg-white p-6 transition-all hover:shadow-xl group"
+                >
+                  <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl border bg-slate-50">
+                    <Image src={item.image} alt={item.name} fill className="object-contain p-2 transition-transform group-hover:scale-110" />
                   </div>
-                  <button onClick={() => removeItem(item.id)} className="text-slate-400 hover:text-red-500 transition-colors">
-                    <Trash2 className="h-5 w-5" />
-                  </button>
-                </div>
+                  
+                  <div className="flex-1 text-center sm:text-left">
+                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-primary transition-colors">{item.name}</h3>
+                    <p className="text-sm font-black text-primary">{formatPrice(item.price)}</p>
+                  </div>
 
-                <div className="text-right min-w-[80px]">
-                  <p className="font-bold text-slate-900">{formatPrice(item.price * item.quantity)}</p>
-                </div>
-              </div>
-            ))}
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center rounded-xl border-2 border-slate-100 p-1 bg-slate-50/50">
+                      <motion.button whileTap={{ scale: 0.8 }} onClick={() => updateQuantity(item.id, -1)} className="flex h-8 w-8 items-center justify-center hover:bg-white rounded-lg transition-colors"><Minus className="h-3 w-3" /></motion.button>
+                      <span className="w-8 text-center text-sm font-black">{item.quantity}</span>
+                      <motion.button whileTap={{ scale: 0.8 }} onClick={() => updateQuantity(item.id, 1)} className="flex h-8 w-8 items-center justify-center hover:bg-white rounded-lg transition-colors"><Plus className="h-3 w-3" /></motion.button>
+                    </div>
+                    <motion.button 
+                      whileHover={{ scale: 1.1, color: "#ef4444" }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={() => removeItem(item.id)} 
+                      className="text-slate-400 transition-colors p-2"
+                    >
+                      <Trash2 className="h-5 w-5" />
+                    </motion.button>
+                  </div>
 
-            <Link href="/products" className="inline-flex items-center gap-2 font-bold text-primary hover:underline">
-              <ArrowLeft className="h-4 w-4" />
-              Continue Shopping
-            </Link>
+                  <div className="text-right min-w-[100px]">
+                    <p className="text-lg font-black text-slate-900">{formatPrice(item.price * item.quantity)}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
+              <Link href="/products" className="inline-flex items-center gap-2 font-black text-primary hover:gap-3 transition-all">
+                <ArrowLeft className="h-4 w-4" />
+                Continue Shopping
+              </Link>
+            </motion.div>
           </div>
 
           {/* Summary */}
-          <aside>
-            <div className="rounded-2xl border bg-white p-6 shadow-sm">
-              <h3 className="mb-6 text-xl font-bold text-slate-900">Order Summary</h3>
+          <motion.aside
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <div className="rounded-[2rem] border border-slate-100 bg-white p-8 shadow-xl">
+              <h3 className="mb-6 text-xl font-black text-slate-900 uppercase tracking-widest">Order Summary</h3>
               
               <div className="space-y-4">
-                <div className="flex justify-between text-slate-600">
+                <div className="flex justify-between text-slate-500 font-medium">
                   <span>Subtotal</span>
-                  <span className="font-medium">{formatPrice(subtotal)}</span>
+                  <span className="font-black text-slate-900">{formatPrice(subtotal)}</span>
                 </div>
-                <div className="flex justify-between text-slate-600">
+                <div className="flex justify-between text-slate-500 font-medium">
                   <span>Delivery Charges</span>
-                  <span className={deliveryCharge === 0 ? "text-green-600 font-bold" : "font-medium"}>
+                  <span className={deliveryCharge === 0 ? "text-green-600 font-black" : "font-black text-slate-900"}>
                     {deliveryCharge === 0 ? "FREE" : formatPrice(deliveryCharge)}
                   </span>
                 </div>
                 {deliveryCharge > 0 && (
-                   <p className="text-[10px] text-slate-400">Shop for ₹{500 - subtotal} more for FREE delivery</p>
+                   <motion.p 
+                     animate={{ x: [0, 5, 0] }}
+                     transition={{ repeat: Infinity, duration: 2 }}
+                     className="text-[10px] font-bold text-primary uppercase tracking-widest bg-primary/5 p-2 rounded-lg text-center"
+                   >
+                     Add ₹{500 - subtotal} more for FREE delivery
+                   </motion.p>
                 )}
                 
-                <div className="border-t pt-4">
-                  <div className="flex justify-between text-lg font-bold text-slate-900">
+                <div className="border-t border-slate-100 pt-6 mt-6">
+                  <div className="flex justify-between text-2xl font-black text-slate-900">
                     <span>Total</span>
                     <span>{formatPrice(total)}</span>
                   </div>
-                  <p className="mt-1 text-xs text-slate-500 italic">Inclusive of all taxes</p>
+                  <p className="mt-1 text-xs text-slate-400 font-medium uppercase tracking-widest">Inclusive of all taxes</p>
                 </div>
 
-                <Link href="/checkout" className="block">
-                  <button className="w-full rounded-xl bg-primary py-4 font-bold text-white transition-all hover:bg-primary-dark hover:shadow-lg">
+                <Link href="/checkout" className="block mt-8">
+                  <motion.button 
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full rounded-2xl bg-primary py-5 font-black text-white shadow-xl shadow-primary/20 transition-all hover:bg-primary-dark"
+                  >
                     Proceed to Checkout
-                  </button>
+                  </motion.button>
                 </Link>
               </div>
             </div>
             
-            <div className="mt-6 rounded-xl border-2 border-dashed border-primary/20 bg-primary/5 p-4">
-              <p className="text-xs font-medium text-slate-600">
-                <span className="font-bold text-primary">Note:</span> Prescription medicines will require a valid prescription upload at checkout.
+            <div className="mt-6 rounded-2xl border-2 border-dashed border-primary/20 bg-primary/5 p-6">
+              <p className="text-xs font-bold text-slate-600 leading-relaxed">
+                <span className="font-black text-primary uppercase tracking-widest block mb-1">Important:</span> 
+                Prescription medicines will require a valid prescription upload at the next step.
               </p>
             </div>
-          </aside>
+          </motion.aside>
         </div>
       </div>
     </div>
