@@ -67,7 +67,7 @@ const Footer = () => {
               </li>
               <li className="flex gap-3">
                 <Mail className="h-5 w-5 shrink-0 text-primary" />
-                <span>contact@limrapharmacy.com</span>
+                <span></span>
               </li>
             </ul>
           </div>
