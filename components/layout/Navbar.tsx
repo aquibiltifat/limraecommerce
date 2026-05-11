@@ -40,19 +40,19 @@ const Navbar = () => {
         className="fixed top-0 left-0 right-0 z-[60] h-1 origin-left bg-primary"
         style={{ scaleX }}
       />
-      <header className="fixed top-0 left-0 right-0 z-50 flex justify-center px-4 py-4 pointer-events-none">
+      <header className="fixed top-0 left-0 right-0 z-50 flex justify-center px-6 sm:px-4 py-2 sm:py-4 pointer-events-none">
         <motion.div 
           layout
           initial={false}
           className={cn(
             "w-full max-w-7xl pointer-events-auto transition-all duration-500 ease-in-out",
             "border border-slate-200/50 bg-white/80 backdrop-blur-xl shadow-xl overflow-hidden",
-            isScrolled ? "rounded-full py-2 px-6" : "rounded-[2.5rem] py-3 px-4 md:px-8"
+            isScrolled ? "rounded-full py-2 px-6" : "rounded-2xl sm:rounded-[2.5rem] py-3 px-4 md:px-8"
           )}
         >
           <div className="flex flex-col gap-2">
             {/* Main Row */}
-            <div className="flex items-center justify-between gap-4 md:gap-8">
+            <div className="flex items-center justify-between gap-2 sm:gap-8">
               {/* Logo */}
               <Link href="/" className="flex shrink-0 items-center transition-transform hover:scale-105 active:scale-95">
                 <motion.div layout>
@@ -63,7 +63,7 @@ const Navbar = () => {
                     height={80}
                     className={cn(
                       "w-auto object-contain transition-all duration-500",
-                      isScrolled ? "h-10 md:h-12" : "h-14 md:h-20"
+                      isScrolled ? "h-8 sm:h-12" : "h-10 sm:h-20"
                     )}
                     priority
                   />
@@ -85,7 +85,7 @@ const Navbar = () => {
               </div>
 
               {/* Actions & Contact */}
-              <div className="flex items-center gap-3 md:gap-6">
+              <div className="flex items-center gap-2 sm:gap-6">
                 {/* Contact Us - Desktop */}
                 <AnimatePresence>
                   {!isScrolled && (
@@ -96,36 +96,38 @@ const Navbar = () => {
                       className="hidden sm:flex flex-col items-end justify-center"
                     >
                       <span className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Contact Us</span>
-                      <a href="tel:+919876543210" className="text-sm font-black text-slate-900 hover:text-primary transition-colors">
-                        +91 98765 43210
-                      </a>
+                      <div className="flex flex-col items-end">
+                        <a href="tel:+917388292324" className="text-xs font-black text-slate-900 hover:text-primary transition-colors">
+                          +91 73882 92324
+                        </a>
+                      </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
 
                 {/* Action Buttons */}
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1 sm:gap-2">
                   <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                    <Link href="/cart" className="relative flex h-10 w-10 md:h-11 md:w-11 items-center justify-center rounded-full bg-slate-100 text-primary transition-all hover:bg-primary hover:text-white group">
-                      <ShoppingCart className="size-5 sm:size-6" />
-                      <span className="absolute -top-1 -right-1 flex h-4 w-4 sm:h-5 sm:w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
+                    <Link href="/cart" className="relative flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-slate-100 text-primary transition-all hover:bg-primary hover:text-white group">
+                      <ShoppingCart className="size-5" />
+                      <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white shadow-sm ring-2 ring-white">
                         1
                       </span>
                     </Link>
                   </motion.div>
 
-                  <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                    <Link href="/login" className="flex h-10 w-10 md:h-11 md:w-11 items-center justify-center rounded-full bg-slate-100 text-primary transition-all hover:bg-primary hover:text-white">
-                      <User className="size-5 sm:size-6" />
+                  <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className="hidden xs:flex">
+                    <Link href="/login" className="flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-slate-100 text-primary transition-all hover:bg-primary hover:text-white">
+                      <User className="size-5" />
                     </Link>
                   </motion.div>
 
                   <motion.button 
                     whileTap={{ scale: 0.9 }}
                     onClick={() => setIsMenuOpen(!isMenuOpen)} 
-                    className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white md:hidden"
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-white md:hidden"
                   >
-                    {isMenuOpen ? <X className="size-6" /> : <Menu className="size-6" />}
+                    {isMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
                   </motion.button>
                 </div>
               </div>
@@ -176,19 +178,20 @@ const Navbar = () => {
                 <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
                 <input
                   type="text"
-                  placeholder="Search..."
-                  className="w-full h-full rounded-2xl bg-slate-100 border-none px-12 text-base outline-none focus:bg-white focus:ring-2 focus:ring-primary/20"
+                  placeholder="Search for medicines..."
+                  className="w-full h-full rounded-2xl bg-slate-100 border-none px-12 text-sm outline-none focus:bg-white focus:ring-2 focus:ring-primary/20"
                 />
               </div>
               
-              <div className="grid grid-cols-1 gap-2">
-                <span className="text-[10px] text-slate-400 uppercase tracking-widest font-black mb-2">Categories</span>
-                <div className="grid grid-cols-2 gap-3">
-                  {categories.slice(0, 4).map((cat) => (
+              <div className="space-y-4">
+                <span className="text-[10px] text-slate-400 uppercase tracking-widest font-black">Categories</span>
+                <div className="grid grid-cols-2 gap-2">
+                  {categories.map((cat) => (
                     <Link 
                       key={cat.name} 
                       href={cat.href}
-                      className="flex items-center justify-center h-12 rounded-2xl bg-slate-50 text-sm font-bold text-slate-700 hover:bg-primary/5 hover:text-primary transition-all"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center justify-center h-12 rounded-xl bg-slate-50 text-xs font-bold text-slate-700 active:bg-primary active:text-white transition-all"
                     >
                       {cat.name}
                     </Link>
@@ -196,10 +199,26 @@ const Navbar = () => {
                 </div>
               </div>
 
-              <Link href="/upload-prescription" className="flex items-center justify-center gap-3 h-14 rounded-2xl bg-primary text-white text-base font-bold shadow-lg shadow-primary/20 active:scale-95 transition-all">
+              <div className="grid grid-cols-2 gap-4">
+                 <Link href="/login" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-2 h-12 rounded-xl bg-slate-100 text-sm font-bold text-slate-700">
+                    <User className="h-4 w-4" />
+                    Account
+                 </Link>
+                 <Link href="/cart" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-2 h-12 rounded-xl bg-slate-100 text-sm font-bold text-slate-700">
+                    <ShoppingCart className="h-4 w-4" />
+                    Cart
+                 </Link>
+              </div>
+
+              <Link href="/upload-prescription" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-3 h-14 rounded-2xl bg-primary text-white text-base font-bold shadow-lg shadow-primary/20 active:scale-95 transition-all">
                 <Upload className="h-5 w-5" />
                 Upload Prescription
               </Link>
+
+              <div className="pt-4 border-t border-slate-100 text-center">
+                <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold mb-1">Emergency Support</p>
+                <a href="tel:+917388292324" className="text-lg font-black text-primary">+91 73882 92324</a>
+              </div>
             </div>
           </div>
         </motion.div>

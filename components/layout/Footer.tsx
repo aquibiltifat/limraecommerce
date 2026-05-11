@@ -14,9 +14,9 @@ const Footer = () => {
               <Image
                 src="/logo.png"
                 alt="Limra Pharmacy & Surgical"
-                width={150}
-                height={50}
-                className="h-12 w-auto object-contain brightness-0 invert"
+                width={280}
+                height={80}
+                className="h-24 w-auto object-contain brightness-0 invert"
               />
             </div>
             <p className="mb-6 text-sm leading-relaxed">
@@ -62,8 +62,11 @@ const Footer = () => {
               </li>
               <li className="flex gap-3">
                 <Phone className="h-5 w-5 shrink-0 text-primary" />
-                <span>+91 7388292324</span>
-                <span>+91 6307785692</span>
+                <span>+91 7388292324(Limra Pharmacy)</span>
+              </li>
+              <li className="flex gap-3">
+                <Phone className="h-5 w-5 shrink-0 text-primary" />
+                <span>+91 6307785692(Limra Surgical)</span>
               </li>
               <li className="flex gap-3">
                 <Mail className="h-5 w-5 shrink-0 text-primary" />

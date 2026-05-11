@@ -29,32 +29,33 @@ const ProductsPage = () => {
   return (
     <div className="bg-slate-50 min-h-screen pt-24 pb-12 md:pt-40 lg:pt-48">
       <div className="site-container">
+        {/* Header Section */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
         >
           <div>
-            <h1 className="text-3xl font-bold text-slate-900">All Products</h1>
-            <p className="text-slate-500">Showing {filteredProducts.length} medicines and health products</p>
+            <h1 className="text-2xl md:text-3xl font-black text-slate-900">All Products</h1>
+            <p className="text-sm text-slate-500 font-medium">Showing {filteredProducts.length} health essentials</p>
           </div>
           
           <div className="flex items-center gap-3">
             <div className="relative group">
               <motion.button 
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-2 rounded-lg border bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:bg-slate-50"
+                className="flex items-center gap-2 rounded-xl border bg-white px-4 py-2.5 text-sm font-bold text-slate-700 shadow-sm transition-colors hover:bg-slate-50"
               >
                 <SlidersHorizontal className="h-4 w-4" />
                 Sort: {sortBy}
-                <ChevronDown className="h-4 w-4" />
+                <ChevronDown className="h-4 w-4 transition-transform group-hover:rotate-180" />
               </motion.button>
-              <div className="absolute right-0 mt-2 hidden w-40 rounded-lg border bg-white p-2 shadow-xl group-hover:block z-20">
+              <div className="absolute right-0 mt-2 hidden w-48 rounded-2xl border bg-white p-2 shadow-2xl group-hover:block z-20">
                 {["Popularity", "Price: Low to High", "Price: High to Low", "Newest"].map(option => (
                   <button 
                     key={option} 
                     onClick={() => setSortBy(option)}
-                    className="block w-full text-left rounded-md px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-primary"
+                    className="block w-full text-left rounded-xl px-4 py-2.5 text-sm font-bold text-slate-600 hover:bg-primary/5 hover:text-primary transition-all"
                   >
                     {option}
                   </button>
@@ -65,16 +66,36 @@ const ProductsPage = () => {
         </motion.div>
 
         <div className="flex flex-col gap-8 lg:flex-row">
-          {/* Filters Sidebar */}
+          {/* Mobile Categories (Horizontal Scroll) */}
+          <div className="lg:hidden -mx-6 px-6 overflow-x-auto no-scrollbar pb-2">
+            <div className="flex gap-2 min-w-max">
+              {categories.map(category => (
+                <motion.button
+                  key={category}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-widest transition-all ${
+                    selectedCategory === category 
+                      ? "bg-primary text-white shadow-lg shadow-primary/20" 
+                      : "bg-white text-slate-500 border border-slate-100 hover:border-primary/20"
+                  }`}
+                >
+                  {category}
+                </motion.button>
+              ))}
+            </div>
+          </div>
+
+          {/* Desktop Filters Sidebar */}
           <motion.aside 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="w-full lg:w-64 shrink-0"
+            className="hidden lg:block w-64 shrink-0"
           >
-            <div className="sticky top-28 md:top-36 space-y-6 rounded-3xl border bg-white p-6 shadow-sm">
+            <div className="sticky top-36 space-y-6 rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
               <div>
-                <h3 className="mb-4 flex items-center gap-2 font-black text-slate-900">
+                <h3 className="mb-4 flex items-center gap-2 font-black text-slate-900 uppercase tracking-widest text-[10px]">
                   <Filter className="h-4 w-4 text-primary" />
                   Categories
                 </h3>
@@ -85,9 +106,9 @@ const ProductsPage = () => {
                       whileHover={{ x: 4 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => setSelectedCategory(category)}
-                      className={`block w-full text-left rounded-xl px-3 py-2.5 text-sm transition-all ${
+                      className={`block w-full text-left rounded-xl px-4 py-2.5 text-sm font-bold transition-all ${
                         selectedCategory === category 
-                          ? "bg-primary text-white font-bold shadow-lg shadow-primary/20" 
+                          ? "bg-primary text-white shadow-lg shadow-primary/20" 
                           : "text-slate-600 hover:bg-slate-50"
                       }`}
                     >
@@ -97,24 +118,22 @@ const ProductsPage = () => {
                 </div>
               </div>
               
-              <div className="border-t pt-6">
-                <h3 className="mb-4 font-black text-slate-900">Price Range</h3>
+              <div className="border-t border-slate-50 pt-6">
+                <h3 className="mb-4 font-black text-slate-900 uppercase tracking-widest text-[10px]">Price Range</h3>
                 <div className="space-y-4">
                   <input type="range" className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-primary" min="0" max="5000" />
-                  <div className="flex items-center justify-between text-xs font-bold text-slate-500 uppercase tracking-widest">
+                  <div className="flex items-center justify-between text-[10px] font-black text-slate-400 uppercase tracking-widest">
                     <span>₹0</span>
                     <span>₹5000+</span>
                   </div>
                 </div>
               </div>
 
-              <div className="border-t pt-6">
-                <h3 className="mb-4 font-black text-slate-900">Availability</h3>
+              <div className="border-t border-slate-50 pt-6">
+                <h3 className="mb-4 font-black text-slate-900 uppercase tracking-widest text-[10px]">Availability</h3>
                 <label className="flex items-center gap-3 cursor-pointer group">
-                  <div className="relative flex items-center justify-center">
-                    <input type="checkbox" className="peer h-5 w-5 rounded border-slate-200 text-primary focus:ring-primary" defaultChecked />
-                  </div>
-                  <span className="text-sm text-slate-600 group-hover:text-primary transition-colors">Exclude Out of Stock</span>
+                  <input type="checkbox" className="h-5 w-5 rounded-lg border-slate-200 text-primary focus:ring-primary/20" defaultChecked />
+                  <span className="text-sm font-bold text-slate-600 group-hover:text-primary transition-colors">Exclude Out of Stock</span>
                 </label>
               </div>
             </div>
@@ -130,7 +149,7 @@ const ProductsPage = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.3 }}
-                  className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3"
+                  className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3"
                 >
                   {filteredProducts.map((product) => (
                     <ProductCard key={product.id} {...product} />
@@ -140,16 +159,16 @@ const ProductsPage = () => {
                 <motion.div 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="flex h-64 flex-col items-center justify-center rounded-3xl border-2 border-dashed bg-white text-center p-8"
+                  className="flex h-80 flex-col items-center justify-center rounded-[2.5rem] border-2 border-dashed border-slate-100 bg-white text-center p-8"
                 >
-                  <p className="text-lg font-bold text-slate-400">No products found in this category.</p>
+                  <p className="text-lg font-black text-slate-300 mb-4">No products found</p>
                   <motion.button 
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setSelectedCategory("All")}
-                    className="mt-4 text-primary font-bold hover:underline"
+                    className="rounded-full bg-primary/10 px-8 py-3 text-sm font-black text-primary transition-all hover:bg-primary hover:text-white"
                   >
-                    Clear all filters
+                    View All Products
                   </motion.button>
                 </motion.div>
               )}
